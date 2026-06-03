@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandala Media — AI Workflow Optimization Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f0e0d;
+  --ink2: #3a3835;
+  --ink3: #6b6860;
+  --paper: #f7f5f0;
+  --paper2: #edeae3;
+  --paper3: #e3dfd6;
+  --accent: #1a4fd6;
+  --accent2: #0f3099;
+  --green: #0f6e3a;
+  --green-bg: #e8f5ee;
+  --amber: #9a5c00;
+  --amber-bg: #fdf3e0;
+  --red: #c0392b;
+  --red-bg: #fdecea;
+  --rule: rgba(15,14,13,0.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* PRINT */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+  .page-break { page-break-before: always; }
+}
+
+/* ── HEADER ── */
+.doc-header {
+  border-bottom: 2px solid var(--ink);
+  padding: 48px 64px 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: end;
+}
+.doc-header .org {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.doc-header h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 40px;
+  line-height: 1.15;
+  font-weight: 400;
+  max-width: 640px;
+}
+.doc-header h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+.doc-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.9;
+}
+.doc-meta strong { color: var(--ink2); font-weight: 500; }
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 64px;
+}
+
+/* ── SECTIONS ── */
+.section {
+  padding: 56px 64px;
+  border-bottom: 1px solid var(--rule);
+}
+.section:last-child { border-bottom: none; }
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 28px;
+  color: var(--ink);
+}
+.section-title .cn {
+  font-size: 16px;
+  color: var(--ink3);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  margin-left: 10px;
+}
+
+/* ── INTRO ── */
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.intro-para { font-size: 15px; color: var(--ink2); line-height: 1.75; }
+.intro-context {
+  background: var(--paper2);
+  border-left: 3px solid var(--accent);
+  padding: 20px 24px;
+  border-radius: 0 8px 8px 0;
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+.intro-context strong { color: var(--ink); font-weight: 600; }
+
+/* ── WORKFLOW CARDS ── */
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.wf-card {
+  background: white;
+  border: 1px solid var(--paper3);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  transition: box-shadow .2s, border-color .2s;
+}
+.wf-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); border-color: var(--paper3); }
+.wf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.badge-auto { background: var(--green-bg); color: var(--green); }
+.badge-semi { background: #e8eef8; color: var(--accent2); }
+.badge-manual { background: var(--amber-bg); color: var(--amber); }
+
+.wf-num {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.wf-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.wf-sub { font-size: 12.5px; color: var(--ink3); margin-bottom: 14px; line-height: 1.5; }
+.wf-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
+.wf-tag {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  background: var(--paper2);
+  color: var(--ink2);
+  font-weight: 400;
+}
+.wf-tag.blue { background: #e8eef8; color: var(--accent2); }
+.wf-tag.green { background: var(--green-bg); color: var(--green); }
+.wf-tag.amber { background: var(--amber-bg); color: var(--amber); }
+
+.wf-steps { list-style: none; padding: 0; }
+.wf-steps li {
+  font-size: 12.5px;
+  color: var(--ink2);
+  padding: 5px 0 5px 18px;
+  border-bottom: 1px solid var(--paper2);
+  position: relative;
+  line-height: 1.55;
+}
+.wf-steps li:last-child { border-bottom: none; }
+.wf-steps li::before {
+  content: counter(step);
+  counter-increment: step;
+  position: absolute;
+  left: 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  top: 6px;
+}
+.wf-steps { counter-reset: step; }
+
+.wf-trigger {
+  margin-top: 14px;
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 11.5px;
+  color: var(--ink2);
+  line-height: 1.55;
+}
+.wf-trigger strong { color: var(--accent2); font-weight: 600; }
+
+/* ── GAP ANALYSIS ── */
+.gap-list { display: flex; flex-direction: column; gap: 32px; }
+.gap-card {
+  border: 1px solid var(--paper3);
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+}
+.gap-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--paper2);
+  background: var(--paper);
+}
+.gap-number {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 3px;
+}
+.gap-header-text h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.gap-header-text .cn-sub {
+  font-size: 13px;
+  color: var(--ink3);
+}
+.gap-priority {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+.p0 { background: var(--red-bg); color: var(--red); }
+.p1 { background: var(--amber-bg); color: var(--amber); }
+
+.gap-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.gap-col { padding: 24px 28px; }
+.gap-col + .gap-col { border-left: 1px solid var(--paper2); }
+.gap-field { margin-bottom: 16px; }
+.gap-field:last-child { margin-bottom: 0; }
+.gap-field-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 5px;
+}
+.gap-field-value {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.6;
+}
+.gap-field-value ul { padding-left: 16px; }
+.gap-field-value ul li { margin-bottom: 3px; }
+.now { color: var(--red); font-weight: 500; }
+.goal { color: var(--green); font-weight: 500; }
+.tech {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  background: var(--paper2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  line-height: 1.6;
+}
+
+/* ── PRIORITY TABLE ── */
+.priority-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.priority-table th {
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink3);
+  padding: 10px 16px;
+  border-bottom: 2px solid var(--ink);
+}
+.priority-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--paper2);
+  vertical-align: top;
+  color: var(--ink2);
+  line-height: 1.5;
+}
+.priority-table tr:last-child td { border-bottom: none; }
+.priority-table tr:hover td { background: var(--paper); }
+.badge-p0 {
+  display: inline-block;
+  background: var(--red-bg);
+  color: var(--red);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.badge-p1 {
+  display: inline-block;
+  background: var(--amber-bg);
+  color: var(--amber);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.badge-p2 {
+  display: inline-block;
+  background: var(--green-bg);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.complexity-dots { letter-spacing: 2px; }
+.dot-full { color: var(--ink); }
+.dot-empty { color: var(--paper3); }
+
+/* ── ARCHITECTURE ── */
+.arch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--paper3);
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  margin-bottom: 24px;
+}
+.arch-layer { padding: 24px 20px; border-right: 1px solid var(--paper2); }
+.arch-layer:last-child { border-right: none; }
+.arch-layer-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 6px;
+}
+.arch-layer-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.arch-layer-cn { font-size: 11px; color: var(--ink3); margin-bottom: 14px; }
+.arch-items { list-style: none; }
+.arch-items li {
+  font-size: 12px;
+  color: var(--ink2);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--paper2);
+  line-height: 1.4;
+}
+.arch-items li:last-child { border-bottom: none; }
+.arch-items .gap-highlight {
+  color: var(--red);
+  font-weight: 600;
+}
+.arch-note {
+  background: var(--paper2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+}
+.arch-note strong { color: var(--ink); }
+
+/* ── DISCUSSION ── */
+.disc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.disc-item {
+  background: white;
+  border: 1px solid var(--paper3);
+  border-radius: 10px;
+  padding: 20px;
+}
+.disc-item-num {
+  font-size: 28px;
+  font-family: 'Instrument Serif', serif;
+  color: var(--paper3);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.disc-item h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.disc-item p { font-size: 13px; color: var(--ink3); line-height: 1.6; }
+
+/* ── EXISTING AUTOMATION TABLE ── */
+.auto-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.auto-table th {
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink3);
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--ink);
+}
+.auto-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--paper2);
+  vertical-align: top;
+  color: var(--ink2);
+  line-height: 1.5;
+}
+.auto-table tr:last-child td { border-bottom: none; }
+.auto-table tr:hover td { background: var(--paper); }
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.sp-full { background: var(--green-bg); color: var(--green); }
+.sp-semi { background: #e8eef8; color: var(--accent2); }
+.trigger-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  background: var(--paper2);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--ink);
+}
+
+/* ── FOOTER ── */
+.doc-footer {
+  padding: 28px 64px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--ink3);
+}
+.doc-footer strong { color: var(--ink2); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="doc-header">
+  <div>
+    <div class="org">Mandala Media · Internal Document</div>
+    <h1>AI Agent Workflow<br>Optimization Brief<em>.</em></h1>
+  </div>
+  <div class="doc-meta">
+    <strong>Author</strong><br>Vita, Director of Business<br><br>
+    <strong>Date</strong><br>June 2026<br><br>
+    <strong>Purpose</strong><br>CTO Discussion — Agent Integration Roadmap<br><br>
+    <strong>Language</strong><br>EN primary · 中文 secondary
+  </div>
+</header>
+
+<!-- SECTION 1: BACKGROUND -->
+<section class="section">
+  <div class="section-label">01 · Background</div>
+  <h2 class="section-title">Who We Are & What We Do <span class="cn">背景与目标</span></h2>
+  <div class="intro-grid">
+    <p class="intro-para">
+      Mandala Media is ByteDance's designated overseas influencer marketing agency, headquartered in Hong Kong with teams across Shenzhen and Shanghai. We run global KOL campaigns for clients including BytePlus, Seedance, and CapCut — spanning platforms like TikTok, LinkedIn, YouTube, X, and Xiaohongshu.<br><br>
+      The BD team executes a high volume of workflows daily: creator sourcing, campaign management, quote collection, contract review, and payments. Portions of this pipeline are already semi-automated through Claude + Gmail MCP + Google Drive — but three critical <strong>automation gaps</strong> remain unresolved.
+    </p>
+    <div class="intro-context">
+      <strong>This document serves two purposes:</strong><br><br>
+      1. Document the full landscape of BD workflows — which are automated, which are semi-automated, and which remain manual.<br><br>
+      2. Define the three highest-priority automation gaps that require AI Agent integration or system bridging — as input for CTO planning.<br><br>
+      <strong>Not covered here:</strong> Marketing strategy, client-facing deliverables, or product decisions.
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: CORE WORKFLOWS -->
+<section class="section">
+  <div class="section-label">02 · Core Workflow Landscape</div>
+  <h2 class="section-title">7 Active Workflow Streams <span class="cn">核心工作条线</span></h2>
+  <div class="workflow-grid">
+
+    <!-- WF 01 -->
+    <div class="wf-card">
+      <div class="wf-badge badge-auto">✦ Fully Automated</div>
+      <div class="wf-num">Stream 01</div>
+      <div class="wf-title">Bulk KOL Email Outreach</div>
+      <div class="wf-sub">TikTok → harvest → bulk send → reply triage, end-to-end<br><em style="font-size:11px;color:var(--ink3)">KOL 批量邮件外联</em></div>
+      <div class="wf-tags">
+        <span class="wf-tag blue">TikTok One</span>
+        <span class="wf-tag blue">Gmail MCP</span>
+        <span class="wf-tag green">Malaysia 6.6 ✓</span>
+      </div>
+      <ol class="wf-steps">
+        <li>You set filters in TikTok One browser (region / language / follower range)</li>
+        <li>Claude intercepts XHR, extracts emails → filters Chinese accounts → flags has_xhs → CSV</li>
+        <li>Claude sends personalized emails via Gmail MCP (cc hello + callisto)</li>
+        <li>24–48h later Claude reads all replies, classifies: ①XHS link ②quote ③WhatsApp ④TikTok-only</li>
+        <li>Outputs HTML table for manager reporting</li>
+      </ol>
+      <div class="wf-trigger"><strong>Trigger:</strong> Give me a campaign brief (platform / region / language / follower range / category) — Claude runs everything</div>
+    </div>
+
+    <!-- WF 02 -->
+    <div class="wf-card">
+      <div class="wf-badge badge-semi">◈ Semi-Automated</div>
+      <div class="wf-num">Stream 02</div>
+      <div class="wf-title">B2B Analyst / KOL Personalized Outreach</div>
+      <div class="wf-sub">BytePlus / Seedance — LinkedIn + X, Tier 1–3 targeting<br><em style="font-size:11px;color:var(--ink3)">B2B 分析师个性化外联</em></div>
+      <div class="wf-tags">
+        <span class="wf-tag blue">LinkedIn</span>
+        <span class="wf-tag blue">X / Twitter</span>
+        <span class="wf-tag amber">Gartner / Forrester</span>
+      </div>
+      <ol class="wf-steps">
+        <li>You provide target list (screenshot / URL), Claude scans profiles for relevance</li>
+        <li>Claude drafts personalized emails referencing recent posts / articles, never disclosing budget</li>
+        <li>Asks for collaboration format + rates (original post / reshare / X thread)</li>
+        <li>Reply consolidation: quote table + next-action recommendations</li>
+      </ol>
+      <div class="wf-trigger"><strong>Trigger:</strong> Drop me a target LinkedIn URL or screenshot, name the client (BytePlus / Seedance) — I'll draft the email</div>
+    </div>
+
+    <!-- WF 03 -->
+    <div class="wf-card">
+      <div class="wf-badge badge-semi">◈ Semi-Automated</div>
+      <div class="wf-num">Stream 03</div>
+      <div class="wf-title">Campaign Execution Ops</div>
+      <div class="wf-sub">KOL communications, script feedback, timeline mgmt, multilingual notices<br><em style="font-size:11px;color:var(--ink3)">Campaign 执行运营</em></div>
+      <div class="wf-tags">
+        <span class="wf-tag green">Chinese</span>
+        <span class="wf-tag green">English</span>
+        <span class="wf-tag green">Malay</span>
+        <span class="wf-tag amber">TikTok Shop</span>
+      </div>
+      <ol class="wf-steps">
+        <li>Client brief arrives → Claude parses and generates KOL notices (CN / EN / Malay)</li>
+        <li>Script feedback: translate + restructure key points (compress to minimum)</li>
+        <li>Video chasing: publication deadline reminders, filming notes</li>
+        <li>Reply follow-ups: quotes, terms, secondary outreach drafts</li>
+      </ol>
+      <div class="wf-trigger"><strong>Trigger:</strong> Send me the client's original text or brief, specify language and recipient type — I produce the notice copy</div>
+    </div>
+
+    <!-- WF 04 -->
+    <div class="wf-card">
+      <div class="wf-badge badge-semi">◈ Semi-Automated</div>
+      <div class="wf-num">Stream 04</div>
+      <div class="wf-title">Quote Consolidation & Contract Review</div>
+      <div class="wf-sub">Scan inbox → structured quote table / contract diff<br><em style="font-size:11px;color:var(--ink3)">报价整理 & 合同对比</em></div>
+      <div class="wf-tags">
+        <span class="wf-tag blue">Gmail MCP</span>
+        <span class="wf-tag amber">Contract Review</span>
+        <span class="wf-tag green">HTML Reports</span>
+      </div>
+      <ol class="wf-steps">
+        <li>Say "scan last 10 days for Seedance / CapCut replies" → Claude runs Gmail, fetches full threads</li>
+        <li>Structures: platform / creator type / followers / quote / status → HTML table</li>
+        <li>Contract diff: upload two files, Claude does clause-by-clause comparison, highlights material differences</li>
+        <li>Auto-flags key clauses (priority, payment terms, IP ownership)</li>
+      </ol>
+      <div class="wf-trigger"><strong>Trigger:</strong> "Scan inbox for quotes" or "Compare these two contracts"</div>
+    </div>
+
+    <!-- WF 05 -->
+    <div class="wf-card">
+      <div class="wf-badge badge-auto">✦ Fully Automated</div>
+      <div class="wf-num">Stream 05</div>
+      <div class="wf-title">KOL Payment Workflow</div>
+      <div class="wf-sub">Contract registration → payment check → Wise voucher upload<br><em style="font-size:11px;color:var(--ink3)">KOL 付款工作流</em></div>
+      <div class="wf-tags">
+        <span class="wf-tag blue">Google Drive</span>
+        <span class="wf-tag blue">Google Sheets</span>
+        <span class="wf-tag amber">Wise / Bank</span>
+      </div>
+      <ol class="wf-steps">
+        <li>Upload contract PDF → auto-extracts payment info → writes to mirror sheet (columns R–AB)</li>
+        <li>"Check pending payments" → compares post dates + contract terms, flags overdue</li>
+        <li>Upload Wise voucher → auto-names per convention → uploads to Drive M-side folder → updates columns E–I</li>
+      </ol>
+      <div class="wf-trigger"><strong>Trigger:</strong> "Register contract" / "Check pending payments" / "Upload voucher"</div>
+    </div>
+
+    <!-- WF 06 -->
+    <div class="wf-card">
+      <div class="wf-badge" style="background:var(--paper2);color:var(--ink3);">▷ Manual-Led</div>
+      <div class="wf-num">Stream 06</div>
+      <div class="wf-title">KOL Research & Media Evaluation</div>
+      <div class="wf-sub">Ecosystem scanning, deep-review media selection, recommendation writeups<br><em style="font-size:11px;color:var(--ink3)">KOL 研究 & 媒体评估</em></div>
+      <div class="wf-tags">
+        <span class="wf-tag green">Uzbekistan ✓</span>
+        <span class="wf-tag amber">CapCut / Kling</span>
+        <span class="wf-tag green">GitHub Pages</span>
+      </div>
+      <ol class="wf-steps">
+        <li>You specify region / category / platform, Claude does full ecosystem scan</li>
+        <li>Tiered output: Tier 1 / 2 / 3 with platform data and summaries</li>
+        <li>Review media: feasibility assessment + contact info + email drafts</li>
+        <li>Creator recommendation copy (for client-facing use)</li>
+        <li>Publishable HTML report → GitHub Pages</li>
+      </ol>
+      <div class="wf-trigger"><strong>Trigger:</strong> Name region + category + use case — Claude decides scan depth and output format</div>
+    </div>
+
+    <!-- WF 07 -->
+    <div class="wf-card">
+      <div class="wf-badge" style="background:var(--paper2);color:var(--ink3);">▷ Manual-Led</div>
+      <div class="wf-num">Stream 07</div>
+      <div class="wf-title">Internal Ops & HR</div>
+      <div class="wf-sub">Intern training, NDAs, interview materials, onboarding<br><em style="font-size:11px;color:var(--ink3)">内部运营 & HR</em></div>
+      <div class="wf-tags">
+        <span class="wf-tag amber">Training Scripts</span>
+        <span class="wf-tag amber">NDAs</span>
+        <span class="wf-tag green">8 Interns ✓</span>
+      </div>
+      <ol class="wf-steps">
+        <li>Provide resume or background → Claude generates tailored interview guide</li>
+        <li>NDA / contract templates → bilingual CN/EN, in company style</li>
+        <li>Training scripts: provide key points, Claude organizes into structured presentation flow</li>
+      </ol>
+      <div class="wf-trigger"><strong>Trigger:</strong> Send candidate resume, specify whether interview material or onboarding doc</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 3: EXISTING AUTOMATION BASELINE -->
+<section class="section">
+  <div class="section-label">03 · Automation Baseline</div>
+  <h2 class="section-title">What's Already Running <span class="cn">现有自动化能力</span></h2>
+  <p style="color:var(--ink3);font-size:13.5px;margin-bottom:24px;">The following workflows are validated and operational — this serves as the baseline for CTO architecture reference.</p>
+  <table class="auto-table">
+    <thead>
+      <tr>
+        <th>Workflow</th>
+        <th>Implementation</th>
+        <th>Status</th>
+        <th>Trigger</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Bulk KOL Email Outreach</strong></td>
+        <td>Chrome XHR intercept → TikTok One API → Gmail MCP bulk send → reply classification HTML</td>
+        <td><span class="status-pill sp-full">★★★★★ Full Auto</span></td>
+        <td><span class="trigger-code">campaign brief</span></td>
+      </tr>
+      <tr>
+        <td><strong>KOL Payment Workflow</strong></td>
+        <td>Contract PDF parse → Google Sheets write → Wise voucher naming → Drive upload</td>
+        <td><span class="status-pill sp-full">★★★★☆ High Auto</span></td>
+        <td><span class="trigger-code">register contract</span></td>
+      </tr>
+      <tr>
+        <td><strong>Gmail Quote Scan</strong></td>
+        <td>Claude scans Gmail → structured quote table → HTML output</td>
+        <td><span class="status-pill sp-semi">★★★☆☆ Semi-Auto</span></td>
+        <td>Manual trigger required</td>
+      </tr>
+      <tr>
+        <td><strong>Contract Clause Diff</strong></td>
+        <td>Upload files → Claude clause-by-clause diff → highlights material changes</td>
+        <td><span class="status-pill sp-semi">★★★☆☆ Semi-Auto</span></td>
+        <td>Manual upload required</td>
+      </tr>
+      <tr>
+        <td><strong>Campaign KOL Notices</strong></td>
+        <td>Client brief → Claude generates CN / EN / Malay notice copy</td>
+        <td><span class="status-pill sp-semi">★★★☆☆ Semi-Auto</span></td>
+        <td>Manual brief input</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- SECTION 4: GAP ANALYSIS -->
+<section class="section">
+  <div class="section-label">04 · Gap Analysis</div>
+  <h2 class="section-title">3 Automation Gaps to Resolve <span class="cn">待解决的自动化缺口</span></h2>
+  <p style="color:var(--ink3);font-size:13.5px;margin-bottom:28px;">The following three gaps represent the highest-impact bottlenecks. Each requires either an API bridge or a new Agent capability to resolve.</p>
+
+  <div class="gap-list">
+
+    <!-- GAP 1 -->
+    <div class="gap-card">
+      <div class="gap-header">
+        <div class="gap-number">GAP 01</div>
+        <div class="gap-header-text">
+          <h3>Quote Consolidation → Feishu Bridge</h3>
+          <div class="cn-sub">报价整理与飞书的 Bridge</div>
+        </div>
+        <div class="gap-priority p0">P0 — Immediate</div>
+      </div>
+      <div class="gap-body">
+        <div class="gap-col">
+          <div class="gap-field">
+            <div class="gap-field-label">Problem</div>
+            <div class="gap-field-value">Quote tables are currently output as HTML files or Claude conversation tables. There is no automatic sync to Feishu Bitable or Feishu Docs — team members must manually copy data, creating information lag and omission risk.</div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Current state</div>
+            <div class="gap-field-value"><span class="now">Gmail scan → Claude structure → manual paste to Feishu.</span> Each cycle takes 15–30 min of human effort.</div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Target state</div>
+            <div class="gap-field-value"><span class="goal">After Gmail scan completes → auto-write to Feishu Bitable</span> (per Creator / platform / quote / status columns). Team sees real-time updates.</div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Data fields required</div>
+            <div class="gap-field-value">Creator name · LinkedIn / YouTube / X links · Platform type · Follower count · Collaboration format (original post / reshare / video) · Quote amount (per platform) · Currency · Status (pending / quoted / agreed / declined) · Notes</div>
+          </div>
+        </div>
+        <div class="gap-col">
+          <div class="gap-field">
+            <div class="gap-field-label">Trigger logic</div>
+            <div class="gap-field-value">Manual trigger ("scan quotes, write to Feishu") <em>or</em> scheduled (daily 09:00 auto-scan prior 24h inbox). Dedup on write using Email as primary key.</div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Tech path</div>
+            <div class="gap-field-value tech">Feishu Open Platform API (Bitable / Docs)<br>+ Gmail MCP<br>+ Claude parsing layer<br>— or via n8n / Zapier middleware bridge</div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Team impact</div>
+            <div class="gap-field-value">Affects all BD team members. Directly impacts quote visibility, follow-up speed, and reporting accuracy.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 2 -->
+    <div class="gap-card">
+      <div class="gap-header">
+        <div class="gap-number">GAP 02</div>
+        <div class="gap-header-text">
+          <h3>KOL Payment Registration → Google Sheets Bridge</h3>
+          <div class="cn-sub">KOL 付款登记凭证与 Google Sheet 的 Bridge</div>
+        </div>
+        <div class="gap-priority p0">P0 — Immediate</div>
+      </div>
+      <div class="gap-body">
+        <div class="gap-col">
+          <div class="gap-field">
+            <div class="gap-field-label">Problem</div>
+            <div class="gap-field-value">Contract registration and voucher upload are semi-automated, but writing to Google Sheets occasionally produces field mapping errors and column drift. Batch processing of multiple contracts is not supported. Wise voucher naming conventions are complex — manual naming remains the main bottleneck.</div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Current state</div>
+            <div class="gap-field-value"><span class="now">Contract PDF → Claude extracts → semi-manual write to Sheet (columns R–AB). Voucher PDF → Claude suggests naming → human confirms → upload.</span></div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Target state</div>
+            <div class="gap-field-value"><span class="goal">Upload contract/voucher → fully auto: extract fields → write to exact columns → auto-name file → upload to Drive → update Sheet status column.</span></div>
+          </div>
+        </div>
+        <div class="gap-col">
+          <div class="gap-field">
+            <div class="gap-field-label">Core risk points</div>
+            <div class="gap-field-value">
+              <ul>
+                <li>Column mapping (R–AB) breaks when Sheet structure changes</li>
+                <li>Batch processing order confusion across multiple contracts</li>
+                <li>Wise naming rules must be bound to Sheet primary key (KOL ID / contract number)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Tech path</div>
+            <div class="gap-field-value tech">Google Sheets API (Sheets MCP connected)<br>+ Google Drive API<br>+ Claude extraction layer<br>Key improvement: column mapping config file (JSON) — structure changes only require config update, not code changes</div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Team impact</div>
+            <div class="gap-field-value">BD + Finance. Directly affects payment compliance and financial data accuracy.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 3 -->
+    <div class="gap-card">
+      <div class="gap-header">
+        <div class="gap-number">GAP 03</div>
+        <div class="gap-header-text">
+          <h3>Niche Channel Sourcing — Agencies & Non-Mainstream Platforms</h3>
+          <div class="cn-sub">小众渠道 Sourcing（代理机构 + 非主流平台）</div>
+        </div>
+        <div class="gap-priority p1">P1 — Next Sprint</div>
+      </div>
+      <div class="gap-body">
+        <div class="gap-col">
+          <div class="gap-field">
+            <div class="gap-field-label">Problem</div>
+            <div class="gap-field-value">Some client requirements involve finding overseas talent agencies (not individual KOLs) or creators on niche platforms (Reddit, LinkedIn). There is no systematic sourcing methodology — highly dependent on manual search and human judgment.</div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Three sub-scenarios</div>
+            <div class="gap-field-value">
+              <ul>
+                <li><strong>Overseas Talent Agency sourcing:</strong> Find agencies representing AI / tech / film KOLs, build agency database</li>
+                <li><strong>LinkedIn creator outreach:</strong> Profile → content direction assessment → audience fit scoring → personalized message drafting at scale</li>
+                <li><strong>Reddit native content:</strong> Target subreddit → compliance check → community-style promotional content (REDHackathon SOP exists)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="gap-col">
+          <div class="gap-field">
+            <div class="gap-field-label">Current state</div>
+            <div class="gap-field-value"><span class="now">Fully manual: Google search → human filter → send email one by one. No batch LinkedIn sourcing path. Reddit content written individually by hand.</span></div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Target state</div>
+            <div class="gap-field-value"><span class="goal">Agency: specify category + region → Claude web search + structured agency list (size / focus / contact) → auto email drafts. LinkedIn: input URL list → batch profile analysis → match scoring → batch personalized messages. Reddit: specify subreddit + brief → auto-generate community-tone content.</span></div>
+          </div>
+          <div class="gap-field">
+            <div class="gap-field-label">Tech path</div>
+            <div class="gap-field-value tech">Agency: Claude + web_search + structured output template<br>LinkedIn: Claude in Chrome (profile traversal) + scoring model<br>Reddit: Claude + community style SOP (REDHackathon reusable)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 5: PRIORITY MATRIX -->
+<section class="section">
+  <div class="section-label">05 · Priority Matrix</div>
+  <h2 class="section-title">Effort vs. Impact <span class="cn">优先级矩阵</span></h2>
+  <table class="priority-table">
+    <thead>
+      <tr>
+        <th>Requirement</th>
+        <th>Scope</th>
+        <th>Manual Time / Cycle</th>
+        <th>Tech Complexity</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Quote → Feishu Bridge</strong><br><span style="font-size:12px;color:var(--ink3)">报价同步飞书</span></td>
+        <td>All BD team</td>
+        <td>15–30 min / run</td>
+        <td><span class="complexity-dots"><span class="dot-full">●●●</span><span class="dot-empty">○○</span></span> Medium</td>
+        <td><span class="badge-p0">P0</span></td>
+      </tr>
+      <tr>
+        <td><strong>Payment → GSheet Bridge</strong><br><span style="font-size:12px;color:var(--ink3)">付款登记同步</span></td>
+        <td>BD + Finance</td>
+        <td>20–40 min / contract</td>
+        <td><span class="complexity-dots"><span class="dot-full">●●●</span><span class="dot-empty">○○</span></span> Medium</td>
+        <td><span class="badge-p0">P0</span></td>
+      </tr>
+      <tr>
+        <td><strong>Agency Sourcing Automation</strong><br><span style="font-size:12px;color:var(--ink3)">代理机构 sourcing</span></td>
+        <td>BD</td>
+        <td>2–4 hr / search</td>
+        <td><span class="complexity-dots"><span class="dot-full">●●</span><span class="dot-empty">○○○</span></span> Low</td>
+        <td><span class="badge-p1">P1</span></td>
+      </tr>
+      <tr>
+        <td><strong>LinkedIn Batch Profile Analysis</strong><br><span style="font-size:12px;color:var(--ink3)">领英批量分析</span></td>
+        <td>BD</td>
+        <td>1–2 hr / batch</td>
+        <td><span class="complexity-dots"><span class="dot-full">●●●</span><span class="dot-empty">○○</span></span> Medium</td>
+        <td><span class="badge-p1">P1</span></td>
+      </tr>
+      <tr>
+        <td><strong>Reddit Content Generation</strong><br><span style="font-size:12px;color:var(--ink3)">Reddit 内容生成</span></td>
+        <td>BD + Content</td>
+        <td>1–3 hr / campaign</td>
+        <td><span class="complexity-dots"><span class="dot-full">●●</span><span class="dot-empty">○○○</span></span> Low</td>
+        <td><span class="badge-p2">P2 — SOP exists</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- SECTION 6: AGENT ARCHITECTURE -->
+<section class="section">
+  <div class="section-label">06 · Architecture</div>
+  <h2 class="section-title">Proposed Agent Layer Structure <span class="cn">建议的 Agent 架构</span></h2>
+  <p style="color:var(--ink3);font-size:13.5px;margin-bottom:24px;">Built on existing connected tools: Gmail MCP, Google Drive MCP, Google Sheets MCP, Claude in Chrome.</p>
+  <div class="arch-grid">
+    <div class="arch-layer">
+      <div class="arch-layer-num">L1</div>
+      <div class="arch-layer-title">Data Harvesting</div>
+      <div class="arch-layer-cn">数据采集层 · Partially done</div>
+      <ul class="arch-items">
+        <li>TikTok One XHR intercept → Creator harvest</li>
+        <li>Gmail MCP → Inbox scan & parse</li>
+        <li>Claude in Chrome → Web scraping (LinkedIn / media)</li>
+        <li>Web Search → Agency / review media research</li>
+      </ul>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-num">L2</div>
+      <div class="arch-layer-title">Parse & Structure</div>
+      <div class="arch-layer-cn">解析结构化层 · Claude core</div>
+      <ul class="arch-items">
+        <li>PDF contract field extraction</li>
+        <li>Email intent classification</li>
+        <li>Profile audience fit scoring</li>
+        <li>Quote normalization across currencies</li>
+      </ul>
+    </div>
+    <div class="arch-layer" style="background:#fff8f8;">
+      <div class="arch-layer-num" style="color:var(--red);">L3</div>
+      <div class="arch-layer-title">Write & Sync <span style="font-size:10px;color:var(--red);font-weight:700;margin-left:4px;">← GAPS HERE</span></div>
+      <div class="arch-layer-cn">写入同步层 · Where gaps live</div>
+      <ul class="arch-items">
+        <li class="gap-highlight">Feishu Bitable API → Quote auto-write <strong>(Gap 1)</strong></li>
+        <li class="gap-highlight">Google Sheets API → Exact column write <strong>(Gap 2)</strong></li>
+        <li style="color:var(--amber);">Google Drive API → Voucher upload (Gap 2 partial)</li>
+      </ul>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-num">L4</div>
+      <div class="arch-layer-title">Output & Interact</div>
+      <div class="arch-layer-cn">输出交互层 · Done</div>
+      <ul class="arch-items">
+        <li>HTML reports → screenshot for reporting</li>
+        <li>Email drafts → Gmail Drafts → human send</li>
+        <li>Brief → KOL notice copy generation</li>
+        <li>Contract diff → highlighted PDF / HTML</li>
+      </ul>
+    </div>
+  </div>
+  <div class="arch-note">
+    <strong>Core takeaway for CTO:</strong> Claude already handles L1 (harvest) and L2 (parse) well. The P0 gaps are entirely in <strong>L3 — the write/sync layer</strong>. Parsed data currently has nowhere persistent to land. The fix is building stable API bridges from Claude's output to Feishu Bitable (Gap 1) and Google Sheets (Gap 2). Once L3 is solved, all upstream work automatically becomes fully automated.
+    <br><br>
+    <span style="color:var(--ink3)">当前核心问题：Claude 能解析，但解析结果没有稳定的落地目的地，仍需人工转录。解决 L3 = 上游所有半自动流程自动升级为全自动。</span>
+  </div>
+</section>
+
+<!-- SECTION 7: DISCUSSION POINTS -->
+<section class="section">
+  <div class="section-label">07 · Discussion Agenda</div>
+  <h2 class="section-title">Questions for CTO <span class="cn">与 CTO 的讨论议题</span></h2>
+  <div class="disc-grid">
+    <div class="disc-item">
+      <div class="disc-item-num">01</div>
+      <h4>Feishu API Access</h4>
+      <p>Does the company Feishu tenant already have an open-platform app configured? Can we apply for Bitable read/write permissions quickly?<br><span style="color:var(--ink3);font-size:11px;">飞书 API 权限开通路径？</span></p>
+    </div>
+    <div class="disc-item">
+      <div class="disc-item-num">02</div>
+      <h4>Google Workspace Service Account</h4>
+      <p>GDrive / GSheets MCP is connected. Do we need a dedicated service account layer for background scheduled tasks beyond the MCP session?<br><span style="color:var(--ink3);font-size:11px;">是否需要 service account 支持定时任务？</span></p>
+    </div>
+    <div class="disc-item">
+      <div class="disc-item-num">03</div>
+      <h4>Data Security Boundaries</h4>
+      <p>KOL quote amounts and contract figures are sensitive. What permission control strategy when writing to Feishu / GSheet — who sees what?<br><span style="color:var(--ink3);font-size:11px;">敏感数据写入协作工具的权限控制策略？</span></p>
+    </div>
+    <div class="disc-item">
+      <div class="disc-item-num">04</div>
+      <h4>Trigger Mechanism</h4>
+      <p>Prioritize manual trigger (one-sentence Agent trigger) or scheduled auto-trigger (daily cron)? Recommend: manual first to validate accuracy, then convert to scheduled once stable.<br><span style="color:var(--ink3);font-size:11px;">先手动验证准确性，再转定时？</span></p>
+    </div>
+    <div class="disc-item">
+      <div class="disc-item-num">05</div>
+      <h4>Agency Sourcing Data Persistence</h4>
+      <p>Agency info discovered during sourcing — should we build a unified CRM record (Feishu Bitable or Notion) for future reuse?<br><span style="color:var(--ink3);font-size:11px;">搜索到的 agency 信息是否需要建 CRM 沉淀？</span></p>
+    </div>
+    <div class="disc-item">
+      <div class="disc-item-num">06</div>
+      <h4>Platform Compliance — Reddit & LinkedIn</h4>
+      <p>What are the compliance boundaries for automated content generation and publishing on Reddit (anti-bot rules) and LinkedIn (bulk operation limits)?<br><span style="color:var(--ink3);font-size:11px;">两平台自动化的合规边界确认？</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="doc-footer">
+  <div>Mandala Media · Internal Use Only · June 2026</div>
+  <div>Generated with Claude (Anthropic) · <strong>vita@mandalamedia.co</strong></div>
+</footer>
+
+</body>
+</html>
